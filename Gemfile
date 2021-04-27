@@ -1,8 +1,8 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.3'
+ruby '~> 2.7'
 
-gem 'rails', '~> 4.2'
+gem 'rails', '~> 6.1'
 gem 'rails-api'
 gem 'jquery-rails'
 gem 'settingslogic'
