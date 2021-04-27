@@ -116,7 +116,7 @@ GEM
       activemodel (= 4.2.11)
       activerecord (= 4.2.11)
       activesupport (= 4.2.11)
-      bundler (>= 1.17.3)
+      bundler (>= 1.3.0, < 2.0)
       railties (= 4.2.11)
       sprockets-rails
     rails-api (0.4.1)
