@@ -3,7 +3,6 @@ source 'https://rubygems.org'
 ruby '~> 2.7'
 
 gem 'rails', '~> 6.1'
-gem 'rails-api'
 gem 'jquery-rails'
 gem 'settingslogic'
 gem 'mysql2', '< 0.5'
