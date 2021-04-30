@@ -11,6 +11,7 @@ gem 'omniauth-uaa-oauth2', git: 'https://github.com/cloudfoundry/omniauth-uaa-oa
 gem 'nats'
 gem 'sass-rails'
 gem 'eventmachine', '~> 1.0.7'
+gem 'bigdecimal', '1.3.5'
 
 group :production do
   gem 'unicorn'
