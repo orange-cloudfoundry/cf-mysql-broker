@@ -97,7 +97,9 @@ class ServiceBinding < BaseModel
     }
 
     if Settings['tls_ca_certificate']
-      obj['credentials']['ca_certificate'] = Settings['tls_ca_certificate']
+      unless Settings['tls_ca_certificate'].empty?
+        obj['credentials']['ca_certificate'] = Settings['tls_ca_certificate']
+      end
     end
     obj.to_json
   end
