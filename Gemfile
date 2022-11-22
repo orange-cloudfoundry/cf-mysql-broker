@@ -1,17 +1,18 @@
 source 'https://rubygems.org'
 
-ruby '~> 2.3'
+ruby '~> 3.1'
 
-gem 'rails', '~> 4.2'
-gem 'rails-api'
+gem 'rails', '~> 7.0'
 gem 'jquery-rails'
 gem 'settingslogic'
-gem 'mysql2', '< 0.5'
+gem 'mysql2'
 gem 'omniauth-uaa-oauth2', git: 'https://github.com/cloudfoundry/omniauth-uaa-oauth2'
 gem 'nats'
 gem 'sass-rails'
-gem 'eventmachine', '~> 1.0.7'
+gem 'eventmachine'
 gem 'bigdecimal', '1.3.5'
+gem 'rake'
+gem 'psych', '< 4'
 
 group :production do
   gem 'unicorn'
@@ -24,6 +25,7 @@ group :development, :test do
   gem 'brakeman'
   gem 'pry'
   gem 'rb-readline'
+  gem 'rails-controller-testing'
 end
 
 group :test do

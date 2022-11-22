@@ -28,7 +28,7 @@ describe V2::ServiceBindingsController do
     let(:generated_username) { ServiceBinding.new(id: binding_id).username }
     let(:generated_password) { 'generatedpw' }
 
-    let(:make_request) { put :update, id: binding_id, service_instance_id: instance_guid }
+    let(:make_request) { put :update, :params => {id: binding_id, service_instance_id: instance_guid }}
 
     before { allow(SecureRandom).to receive(:base64).and_return(generated_password, 'notthepassword') }
     after { ServiceBinding.new(id: binding_id, service_instance: instance).destroy }
@@ -68,7 +68,7 @@ describe V2::ServiceBindingsController do
       end
 
       context 'when the read-only parameter is set to the boolean value true' do
-        let(:make_request) { put :update, id: binding_id, service_instance_id: instance_guid, parameters: {'read-only' => true} }
+        let(:make_request) { put :update, :params => {id: binding_id, service_instance_id: instance_guid, parameters: {'read-only' => true} } }
         before { allow(ServiceBinding).to receive(:new).and_call_original }
 
         it 'creates a binding with read_only: true' do
@@ -79,7 +79,7 @@ describe V2::ServiceBindingsController do
       end
 
       context 'when the read-only parameter is not set' do
-        let(:make_request) { put :update, id: binding_id, service_instance_id: instance_guid }
+        let(:make_request) { put :update, :params => {id: binding_id, service_instance_id: instance_guid }}
         before { allow(ServiceBinding).to receive(:new).and_call_original }
 
         it 'creates a binding with default read_only: false' do
@@ -90,7 +90,7 @@ describe V2::ServiceBindingsController do
       end
 
       context 'when the read-only parameter has a non-boolean value' do
-        let(:make_request) { put :update, id: binding_id, service_instance_id: instance_guid, parameters: {'read-only' => 'true'} }
+        let(:make_request) { put :update, :params => {id: binding_id, service_instance_id: instance_guid, parameters: {'read-only' => 'truc'} } }
 
         it 'does not create a binding' do
           make_request
@@ -109,7 +109,7 @@ describe V2::ServiceBindingsController do
       end
 
       context 'when an invalid parameter is provided' do
-        let(:make_request) { put :update, id: binding_id, service_instance_id: instance_guid, parameters: {'unexpected-parameter' => true} }
+        let(:make_request) { put :update, :params => {id: binding_id, service_instance_id: instance_guid, parameters: {'unexpected-parameter' => true} } }
 
         it 'does not create a binding' do
           make_request
@@ -129,7 +129,7 @@ describe V2::ServiceBindingsController do
     end
 
     context 'when the service instance does not exist' do
-      let(:make_request) { put :update, id: binding_id, service_instance_id: 'non-existent-guid' }
+      let(:make_request) { put :update, :params => {id: binding_id, service_instance_id: 'non-existent-guid' }}
 
       it 'returns a 404' do
         make_request
@@ -144,7 +144,7 @@ describe V2::ServiceBindingsController do
     let(:binding) { ServiceBinding.new(id: binding_id, service_instance: instance) }
     let(:username) { binding.username }
 
-    let(:make_request) { delete :destroy, service_instance_id: instance.id, id: binding.id }
+    let(:make_request) { delete :destroy, :params => {service_instance_id: instance.id, id: binding.id }}
 
     it_behaves_like 'a controller action that requires basic auth'
 

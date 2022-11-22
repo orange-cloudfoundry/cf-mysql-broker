@@ -26,7 +26,7 @@ class ServiceBinding < BaseModel
       # Can we do this more elegantly, i.e., without checking for a
       # particular raw GRANT statement?
 
-      if grants.any? { |grant| grant.match(Regexp.new("GRANT .* ON `#{database_name}`\\.\\* TO '#{binding.username}'@'%'")) }
+      if grants.any? { |grant| grant.match(Regexp.new("GRANT .* ON `#{database_name}`\\.\\* TO `#{binding.username}`@`%`")) }
         binding
       end
     rescue ActiveRecord::StatementInvalid => e

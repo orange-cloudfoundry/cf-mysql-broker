@@ -1,15 +1,14 @@
 module Manage
   class InstancesController < ApplicationController
 
-    before_filter :redirect_ssl
-    # before_filter :require_login
-    # before_filter :build_uaa_session
-    # before_filter :ensure_all_necessary_scopes_are_approved
-    # before_filter :ensure_can_manage_instance
+    before_action :redirect_ssl
+    # before_action :require_login
+    # before_action :build_uaa_session
+    # before_action :ensure_all_necessary_scopes_are_approved
+    # before_action :ensure_can_manage_instance
 
     def show
       instance = ServiceInstance.find_by_guid(params[:id])
-
       @used_data = ServiceInstanceUsageQuery.new(instance).execute
       @quota = instance.max_storage_mb
       @over_quota = @used_data > @quota

@@ -15,22 +15,22 @@ module RequestHelpers
 
   def get(*args)
     args[2] ||= env
-    super(*args)
+    super(args[0], params: args[1], headers: args[2])
   end
 
   def post(*args)
     args[2] ||= env
-    super(*args)
+    super(args[0], params: args[1], headers: args[2])
   end
 
   def put(*args)
     args[2] ||= env
-    super(*args)
+    super(args[0], params: args[1], headers: args[2])
   end
 
   def delete(*args)
     args[2] ||= env
-    super(*args)
+    super(args[0], params: args[1], headers: args[2])
   end
 end
 

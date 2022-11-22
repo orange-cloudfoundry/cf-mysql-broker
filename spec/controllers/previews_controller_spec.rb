@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe V2::PreviewsController do
+describe PreviewsController do
   describe '#show' do
     it 'returns a 400' do
       get :show

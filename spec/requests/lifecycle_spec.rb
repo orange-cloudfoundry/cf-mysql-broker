@@ -32,6 +32,7 @@ describe 'the service lifecycle' do
   let(:password) {'somepassword'}
   let(:username) {ServiceBinding.new(id: binding_id).username}
   let(:headers) {{"CONTENT_TYPE" => "application/json"}}
+  let(:host) {Rails.configuration.database_configuration[Rails.env].fetch('host')}
 
   before do
     cleanup_mysql_user(username)
@@ -132,13 +133,13 @@ describe 'the service lifecycle' do
         instance = JSON.parse(response.body)
 
         expect(instance.fetch('credentials')).to eq({
-          'hostname' => 'localhost',
+          'hostname' => host,
           'name' => dbname,
           'username' => username,
           'password' => password,
           'port' => 3306,
-          'jdbcUrl' => "jdbc:mysql://localhost:3306/#{dbname}?user=#{username}&password=#{password}",
-          'uri' => "mysql://#{username}:#{password}@localhost:3306/#{dbname}?reconnect=true",
+          'jdbcUrl' => "jdbc:mysql://#{host}:3306/#{dbname}?user=#{username}&password=#{password}",
+          'uri' => "mysql://#{username}:#{password}@#{host}:3306/#{dbname}?reconnect=true",
         })
 
         ##
@@ -146,7 +147,7 @@ describe 'the service lifecycle' do
         ##
         client = create_mysql_client(username, password, dbname)
 
-        client.query("CREATE TABLE IF NOT EXISTS data_values (id VARCHAR(20), data_value VARCHAR(20));")
+        client.query("CREATE TABLE IF NOT EXISTS data_values (id VARCHAR(20), data_value VARCHAR(20), PRIMARY KEY (id));")
         client.query("INSERT INTO data_values VALUES('123', '456');")
         found = client.query("SELECT id, data_value FROM data_values;").first
         expect(found.fetch('data_value')).to eq('456')
@@ -166,13 +167,13 @@ describe 'the service lifecycle' do
         instance = JSON.parse(response.body)
 
         expect(instance.fetch('credentials')).to eq({
-          'hostname' => 'localhost',
+          'hostname' => host,
           'name' => dbname,
           'username' => username,
           'password' => password,
           'port' => 3306,
-          'jdbcUrl' => "jdbc:mysql://localhost:3306/#{dbname}?user=#{username}&password=#{password}",
-          'uri' => "mysql://#{username}:#{password}@localhost:3306/#{dbname}?reconnect=true",
+          'jdbcUrl' => "jdbc:mysql://#{host}:3306/#{dbname}?user=#{username}&password=#{password}",
+          'uri' => "mysql://#{username}:#{password}@#{host}:3306/#{dbname}?reconnect=true",
         })
 
         ##

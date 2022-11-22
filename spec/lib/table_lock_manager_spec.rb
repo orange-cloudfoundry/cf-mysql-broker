@@ -30,7 +30,7 @@ describe TableLockManager do
   def fetch_grants
     grants = connection.select_values("SHOW GRANTS FOR #{username}")
 
-    matching_grants = grants.select {|grant| grant.match(/GRANT .* ON `#{database}`\.\* TO '#{username}'@'%'/)}
+    matching_grants = grants.select {|grant| grant.match(/GRANT .* ON `#{database}`\.\* TO `#{username}`@`%`/)}
   end
 
   describe 'update_table_lock_permissions' do

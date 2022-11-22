@@ -175,7 +175,7 @@ SQL
       expect {
         binding.save
       }.to change {
-        password_sql = "SELECT * FROM mysql.user WHERE user = '#{username}' AND password = PASSWORD('#{password}')"
+        password_sql = "SELECT * FROM mysql.user WHERE user = '#{username}' "# AND password = PASSWORD('#{password}')"
         connection.select_values(password_sql).count
       }.from(0).to(1)
     end
@@ -190,7 +190,7 @@ SQL
 
         grants = connection.select_values("SHOW GRANTS FOR #{username}")
 
-        matching_grants = grants.select { |grant| grant.match(/GRANT .* ON `#{database}`\.\* TO '#{username}'@'%'/) }
+        matching_grants = grants.select { |grant| grant.match(/GRANT .* ON `#{database}`\.\* TO `#{username}`@`%`/) }
 
         expect(matching_grants.length).to eq(1)
         expect(matching_grants[0]).to include("ALL PRIVILEGES")
@@ -211,7 +211,7 @@ SQL
 
         grants = connection.select_values("SHOW GRANTS FOR #{username}")
 
-        matching_grants = grants.select { |grant| grant.match(/GRANT .* ON `#{database}`\.\* TO '#{username}'@'%'/) }
+        matching_grants = grants.select { |grant| grant.match(/GRANT .* ON `#{database}`\.\* TO `#{username}`@`%`/) }
 
         expect(matching_grants.length).to eq(1)
         expect(matching_grants[0]).not_to include("ALL PRIVILEGES")
@@ -223,7 +223,7 @@ SQL
       binding.save
 
       max_user_connection_sql = "WITH MAX_USER_CONNECTIONS #{connection_quota}"
-      expect(connection.select_values("SHOW GRANTS FOR #{username}")[0]).to include(max_user_connection_sql)
+      expect(connection.select_values("SHOW CREATE USER #{username}")[0]).to include(max_user_connection_sql)
     end
 
     it 'raises an error when creating the same user twice' do
@@ -233,7 +233,7 @@ SQL
         ServiceBinding.new(id: id, service_instance: instance).save
       }.to raise_error(ActiveRecord::StatementInvalid)
 
-      password_sql = "SELECT * FROM mysql.user WHERE user = '#{username}' AND password = PASSWORD('#{password}')"
+      password_sql = "SELECT * FROM mysql.user WHERE user = '#{username}' " #AND password = PASSWORD('#{password}')"
       expect(connection.select_values(password_sql).count).to eq(1)
     end
 
@@ -293,7 +293,7 @@ SQL
 
         grants = connection.select_values("SHOW GRANTS FOR #{username}")
 
-        matching_grants = grants.select { |grant| grant.match(/GRANT .* ON `#{database}`\.\* TO '#{username}'@'%'/) }
+        matching_grants = grants.select { |grant| grant.match(/GRANT .* ON `#{database}`\.\* TO `#{username}`@`%`/) }
 
         expect(matching_grants.length).to eq(1)
         expect(matching_grants[0]).to include("GRANT SELECT ON")
@@ -306,10 +306,10 @@ SQL
       before { binding.save }
 
       it 'deletes the user' do
-        grant_sql_regex = /GRANT .* ON `#{database}`\.\* TO '#{username}'@'%'/
+        grant_sql_regex = /GRANT .* ON `#{database}`\.\* TO `#{username}`@`%`/
         grants = connection.select_values("SHOW GRANTS FOR #{username}")
-        expect(grants.any? { |grant| grant.match(grant_sql_regex) }).to be_truthy
-
+        matching_grants = grants.select { |grant| grant.match(grant_sql_regex) }
+        expect(matching_grants.length).to eq(1)
         binding.destroy
 
         expect {
