@@ -1,4 +1,4 @@
-class SetDbName < ActiveRecord::Migration
+class SetDbName < ActiveRecord::Migration[7.0]
   def up
     ServiceInstance.reset_column_information
     ServiceInstance.find_each do |instance|

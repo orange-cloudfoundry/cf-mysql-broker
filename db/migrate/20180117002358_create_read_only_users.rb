@@ -1,4 +1,4 @@
-class CreateReadOnlyUsers < ActiveRecord::Migration
+class CreateReadOnlyUsers < ActiveRecord::Migration[7.0]
   def change
     create_table :read_only_users do |t|
       t.string :username
