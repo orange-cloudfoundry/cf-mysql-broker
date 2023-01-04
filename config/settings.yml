@@ -88,3 +88,7 @@ test:
 ci_test:
   auth_password: 'secret'
   <<: *defaults
+
+production:
+  auth_password: 'secret'
+  <<: *defaults      
