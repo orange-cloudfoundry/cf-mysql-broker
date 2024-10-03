@@ -168,7 +168,11 @@ SQL
     "&useSSL=true&#{mysql_connector_j_flag}&#{mariadb_connector_j_flag}"
   end
 
+  def scheme
+    "?permitMysqlScheme"
+  end
+
   def jdbc_url
-    "jdbc:mysql://#{host}:#{port}/#{database_name}?user=#{username}&password=#{password}#{ssl_arguments}"
+    "jdbc:mysql://#{host}:#{port}/#{database_name}?user=#{username}&password=#{password}#{ssl_arguments}#{ssl_arguments}#{scheme}"
   end
 end
