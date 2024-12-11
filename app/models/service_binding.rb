@@ -169,7 +169,7 @@ SQL
   end
 
   def scheme
-    "?permitMysqlScheme"
+    "&permitMysqlScheme"
   end
 
   def jdbc_url
